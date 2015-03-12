@@ -1,0 +1,84 @@
+RESEARCH -- TCP & UDP (these two are transport-layers)	
+	TCP: connection-oriented, reliable data transfer, packets arrive in order.
+
+	UDP: 
+---------------------------------------------------------------------------------
+Creating a socket:
+	int socket(int domain, int type, int protocol);
+	// e.g: fd = socket (PF_INET, SOCK_STREAM, 0);
+
+	this creates a communication end-point and returns a fd. 
+	//param: domain-communication domain. 
+		e.g PF_UNIX (for local UNIX communication)
+		    PF_INET/INET6 (for IPv4/v6 internet communication)
+	//param: type-specifies the communication style. 
+		e.g TCP ( SOCK_STREAM - stream of bytes)
+		    UDP ( SOC_DGRAM _ unreliable message delivery)
+	//returns -1 and errno on failure. otherwise will reutnr the fd for
+	//the new socket. 
+
+Socket Addressing:
+---------------------------------------------------------------------------------
+	int bind (int sockfd, struct sockaddr* my_addr.slocklen_t addrlen);
+	// struct sockaddr {
+		sa_family_t sin_family; //AF_INET
+		u_int16_t sin_port;     //port: network byte order
+		struct in_addr sin_addr;//IP address: network byte order.
+	   }
+	//takes a socket address structure with an address format that depends 
+	//on the domain.
+	//use after creating a socket in order to assign an address to it. 
+	//return 0 on sucess, otherwise set errno and return -1.
+	// e.g  int port = 9999;
+		struct sockaddr_in addr; 
+		addr.sin_family = AF_INET;
+		addr.sin_addr.s_addr = htonl(INADDR_ANY);
+		addr.sin_port = htons (port); 
+		bind (fd, (struct sockaddr*)&addr, sizeof(addr));
+			//INADDR_ANY will tell OS to pick local IP addresss. 
+---------------------------------------------------------------------------------
+Avoiding port collision (that is, when it says port is still bound)
+	int enable = 1;
+	setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char*)&enable, sizeof(int));
+	//call this before you bind. 
+---------------------------------------------------------------------------------
+Listen and Accept
+	int listen(int fd, int backlog);
+	//sets up a queue for incoming connection requests
+	// e.g: listen(fd, 5);
+		//queue up 5 pending requests.
+	//returns 0 on success, -1 and errno on failure.
+
+	int accept(int fd, struct sockaddr * addr, socklen_t *addrlen);
+	//returns a fd for a new socket and blocks until a request arrives
+	//give you a channel to the requester
+	//e.g: new_fd = accept(fd, (struct sockaddr*)&client_addr, &addr_len);
+	//returns a -1 and set errno if it failed. 
+---------------------------------------------------------------------------------
+Reading and writing on socket
+	use normal read/write. 
+	close the socket by using close()
+---------------------------------------------------------------------------------
+Notes -- Caps
+PF_INET
+	IPv4 internet protocols
+	--socket()
+SOCK_STREAM
+	Provides sequenced, reliable, two-way, connection-based byte streams.
+	An out-of-band data transmission mechanism may be supported.
+	--socket()
+SOL_SOCKET
+	To manipulate options at the sockets API level. 
+	--setsockopt()
+SO_REUSEADDR
+	Indiciates that the rules used by bind call should allow reuse of local
+	addresses.
+	--setsockopt()
+AF_INET
+	IPv4 internet Protocols.
+	Basically same as PF_INET
+	--struct used for bind()
+INADDR_ANY
+	Will bind to all local interfaces.ALL.
+	--struct used for bind()
+---------------------------------------------------------------------------------

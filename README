@@ -1,0 +1,57 @@
+csci4061 F2014 Assignment 5
+section: 4
+date: 12/11/14
+names: Nicholas Weber, Amy Le
+UMN IDs: (weber731, 3408684), (lexxx446, 4520434)
+==========================================================================================================================
+DESCRIPTION
+Our project implements the socket functions for an HTTP web server. These functions are written using UNIX sockets in C.
+==========================================================================================================================
+HOW TO COMPILE OUR PROGRAM
+To compile our program, simply type the following if you are on a linux machine...
+
+>make -f makefile.linux
+
+Or type the following if you are on a Solaris machine...
+
+>make -f makefile.solaris
+
+into the command line. This will create an executable called web_server which will be explained in the next section.
+==========================================================================================================================
+HOW TO USE OUR PROGRAM FROM THE SHELL
+After compiling our program using the above command, you should check the ports to make sure ports are not in use by the
+web_server. Do this by typing in the terminal...
+
+>netstat -tulnap
+
+This above line will pull up port numbers. You need to check the ports that have the word LISTEN next to web_server. If
+you find these, kill these ports using the following command...
+
+>fuser [port number]/tcp -k
+
+Fill in the port number that corresponds to the web_server.
+
+Now you can use our program by typing the following lines without []...
+
+>./web_server [port] [path_to_testing]/testing [number_of_dispatchers] [number_of_workers] [queue_length]
+    Argument descriptions...
+	[port] : may only use ports 1025-65535 by default.
+	[path_to_testing]/testing : the path to your web root location where all the files will be server from. 
+	[number_of_dispatchers] : the number of dispatcher threads you wish to start with. 
+	    Note that this number cannot exceed 100.
+	[number_of_workers] : the number of worker threads you wish to start with.
+	    Note that this number cannot exceed 100. 
+	[queue_length] : The maximum length of the request queue. 
+	    Note that this number cannot exceed 100. 
+An example of the above command is as follows...
+
+>./web_server 9000 /home/student/joe/testing 100 100 100
+
+Now open a second terminal and type the command...
+
+>wget -i <path_to_urls>/urls -0 results
+
+An example of the above command is as follows...
+
+>wget -i /home/student/joe/testing/urls -0 results
+==========================================================================================================================
