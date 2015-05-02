@@ -1,4 +1,3 @@
-4061-Proj5
+UNIX-Sockets
 ==========
 
-Repository for Csci 4061 Project 5
