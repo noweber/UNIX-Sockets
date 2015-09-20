@@ -1,8 +1,4 @@
-csci4061 F2014 Assignment 5
-section: 4
-date: 12/11/14
-names: Nicholas Weber, Amy Le
-UMN IDs: (weber731, 3408684), (lexxx446, 4520434)
+
 ==========================================================================================================================
 DESCRIPTION
 Our project implements the socket functions for an HTTP web server. These functions are written using UNIX sockets in C.

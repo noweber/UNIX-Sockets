@@ -1,8 +1,3 @@
-/* csci4061 F2014 Assignment 5
-* section: 4
-* date: 12/11/14
-* names: Nicholas Weber, Amy Le
-* UMN ID (weber731), (lexxx446) */
 
 #ifndef _REENTRANT
 #define _REENTRANT
